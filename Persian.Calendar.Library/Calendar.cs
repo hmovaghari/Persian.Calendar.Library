@@ -8,17 +8,17 @@ namespace Persian.Calendar.Library
 {
     public class Calendar
     {
-        public DateTime DateTime { get; set; }
+        public DateTime SelectedDateTime { get; set; }
 
         public Calendar(DateTime dateTime, int hijriAdjustment = 0)
         {
-            DateTime = dateTime;
+            SelectedDateTime = dateTime;
             HijriAdjustment = hijriAdjustment;
         }
 
         public Calendar(int hijriAdjustment = 0)
         {
-            DateTime = DateTime.Now;
+            SelectedDateTime = DateTime.Now;
             HijriAdjustment = hijriAdjustment;
         }
 
@@ -31,84 +31,84 @@ namespace Persian.Calendar.Library
 
         public int GregorianYear
         {
-            get => DateTime.Year;
+            get => SelectedDateTime.Year;
         }
 
         public int PersianYear
         {
-            get => CalendarFunctions.GetPersianYear(DateTime);
+            get => CalendarFunctions.GetPersianYear(SelectedDateTime);
         }
 
         public int HijriYear
         {
-            get => CalendarFunctions.GetHijriYear(DateTime, HijriAdjustment);
+            get => CalendarFunctions.GetHijriYear(SelectedDateTime, HijriAdjustment);
         }
 
         public int GregorianMonth
         {
-            get => DateTime.Month;
+            get => SelectedDateTime.Month;
         }
 
         public int PersianMonth
         {
-            get => CalendarFunctions.GetPersianMonth(DateTime);
+            get => CalendarFunctions.GetPersianMonth(SelectedDateTime);
         }
 
         public int HijriMonth
         {
-            get => CalendarFunctions.GetHijriMount(DateTime, HijriAdjustment);
+            get => CalendarFunctions.GetHijriMount(SelectedDateTime, HijriAdjustment);
         }
 
         public string GregorianMonthTiltePersian
         {
-            get => CalendarFunctions.GetGregorianMonthTiltePersian(DateTime);
+            get => CalendarFunctions.GetGregorianMonthTiltePersian(SelectedDateTime);
         }
 
 
         public string PersianMonthTitle
         {
-            get => CalendarFunctions.GetPersianMonthTitle(DateTime);
+            get => CalendarFunctions.GetPersianMonthTitle(SelectedDateTime);
         }
 
         public string HijriMonthTitle
         {
-            get => CalendarFunctions.GetHijriMonthTitle(DateTime, HijriAdjustment);
+            get => CalendarFunctions.GetHijriMonthTitle(SelectedDateTime, HijriAdjustment);
         }
 
 
         public int GregorianDay
         {
-            get => DateTime.Day;
+            get => SelectedDateTime.Day;
         }
 
         public int PersianDay
         {
-            get => CalendarFunctions.GetPersianDay(DateTime);
+            get => CalendarFunctions.GetPersianDay(SelectedDateTime);
         }
 
         public int HijriDay
         {
-            get => CalendarFunctions.GetHijriDay(DateTime, HijriAdjustment);
+            get => CalendarFunctions.GetHijriDay(SelectedDateTime, HijriAdjustment);
         }
 
         public int GregorianDayOfYear
         {
-            get => DateTime.DayOfYear;
+            get => SelectedDateTime.DayOfYear;
         }
 
         public int PersianDayOfYear
         {
-            get => CalendarFunctions.GetPersianDayOfYear(DateTime);
+            get => CalendarFunctions.GetPersianDayOfYear(SelectedDateTime);
         }
 
         public int HijriDayOfYear
         {
-            get => CalendarFunctions.GetHijriDayOfYear(DateTime, HijriAdjustment);
+            get => CalendarFunctions.GetHijriDayOfYear(SelectedDateTime, HijriAdjustment);
         }
 
         public string PersianDayOfWeek
         {
-            get => CalendarFunctions.GetPersianDayOfWeek(DateTime.DayOfWeek);
+            get => CalendarFunctions.GetPersianDayOfWeek(SelectedDateTime.DayOfWeek);
         }
 
         public string PersianEvents
