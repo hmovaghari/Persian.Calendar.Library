@@ -18,6 +18,10 @@ namespace Persian.Calendar.Library
             {
                 components.Dispose();
             }
+            if (CalendarImage != null)
+            {
+                CalendarImage.Dispose();
+            }
             base.Dispose(disposing);
         }
 

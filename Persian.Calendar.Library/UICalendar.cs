@@ -15,6 +15,7 @@ namespace Persian.Calendar.Library
     public partial class UICalendar : UserControl
     {
         private CalendarType calendarType;
+        private Bitmap CalendarImage = null;
 
         public CalendarType CalendarType
         {
@@ -50,7 +51,6 @@ namespace Persian.Calendar.Library
             set => hijriAdjustment = value;
         }
 
-
         public DateTime? SelectedDateTime
         {
             get => monthView.SelectedDateTime;
@@ -74,9 +74,9 @@ namespace Persian.Calendar.Library
 
         public Image GetScreenShot()
         {
-            Bitmap bitmap = new Bitmap(monthView.Width, monthView.Height);
-            monthView.DrawToBitmap(bitmap, new Rectangle(0, 0, bitmap.Width, bitmap.Height));
-            return bitmap;
+            CalendarImage = new Bitmap(monthView.Width, monthView.Height);
+            monthView.DrawToBitmap(CalendarImage, new Rectangle(0, 0, CalendarImage.Width, CalendarImage.Height));
+            return CalendarImage;
         }
     }
 }
