@@ -16,15 +16,19 @@ namespace Persian.Calendar.Library
             HijriAdjustment = hijriAdjustment;
         }
 
-        public Calendar(int hijriAdjustment = 0)
+        public Calendar(int hijriAdjustment = 0) : this(DateTime.Now, hijriAdjustment)
         {
-            SelectedDateTime = DateTime.Now;
-            HijriAdjustment = hijriAdjustment;
+            
         }
 
         public static bool IsValidRegion
         {
             get => CalendarFunctions.IsValidRegion();
+        }
+
+        public static int? GetHijriAdjustmentOnline(DateTime dateTime)
+        {
+            return CalendarFunctions.GetHijriAdjustmentOnline(dateTime);
         }
 
         public int HijriAdjustment { get; set; }

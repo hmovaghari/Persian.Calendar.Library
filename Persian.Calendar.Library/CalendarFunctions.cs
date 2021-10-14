@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
+using System.Net;
+using System.IO;
 
 namespace Persian.Calendar.Library
 {
@@ -16,6 +18,52 @@ namespace Persian.Calendar.Library
         internal static void SetHijriAdjustment(int hijriAdjustment)
         {
             hijriCalendar.HijriAdjustment = hijriAdjustment;
+        }
+
+        internal static int? GetHijriAdjustmentOnline(DateTime dateTime)
+        {
+            var _hijriCalendar = new HijriCalendar();
+
+            string urlAddress = "https://api.aladhan.com/v1/hToG?date=" +
+                _hijriCalendar.GetDayOfMonth(dateTime) + "-" +
+                _hijriCalendar.GetMonth(dateTime) + "-" +
+                _hijriCalendar.GetYear(dateTime);
+
+            string[] output = new string[3];
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlAddress);
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                Stream receiveStream = response.GetResponseStream();
+                StreamReader readStream = null;
+                if (String.IsNullOrWhiteSpace(response.CharacterSet))
+                {
+                    readStream = new StreamReader(receiveStream);
+                }
+                else
+                {
+                    readStream = new StreamReader(receiveStream,
+                        Encoding.GetEncoding(response.CharacterSet));
+                }
+                string data = readStream.ReadToEnd();
+                string strStart = "{\"gregorian\":{\"date\":\"";
+                string strEnd = "\",\"format\":";
+                if (data.Contains(strStart))
+                {
+                    int indexStart = data.IndexOf(strStart, 0) + strStart.Length;
+                    output = data.Substring(indexStart, 10).Split('-');
+                }
+                response.Close();
+                readStream.Close();
+            }
+
+            if (output.Any(x => x == null))
+            {
+                return null;
+            }
+
+            var _dateTime = new DateTime(int.Parse(output[2]), int.Parse(output[1]), int.Parse(output[0]));
+            return (dateTime.Date - _dateTime.Date).Days;
         }
 
         internal static bool IsValidRegion()
