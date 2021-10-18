@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
 using System.Net;
-using System.IO;
+using Newtonsoft.Json;
 
 namespace Persian.Calendar.Library
 {
@@ -22,48 +22,35 @@ namespace Persian.Calendar.Library
 
         internal static int? GetHijriAdjustmentOnline(DateTime dateTime)
         {
+            var webClient = new WebClient();
             var _hijriCalendar = new HijriCalendar();
+            var _dateTime = new DateTime?();
+            var output = new int?();
 
             string urlAddress = "https://api.aladhan.com/v1/hToG?date=" +
                 _hijriCalendar.GetDayOfMonth(dateTime) + "-" +
                 _hijriCalendar.GetMonth(dateTime) + "-" +
                 _hijriCalendar.GetYear(dateTime);
 
-            string[] output = new string[3];
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlAddress);
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            if (response.StatusCode == HttpStatusCode.OK)
+            try
             {
-                Stream receiveStream = response.GetResponseStream();
-                StreamReader readStream = null;
-                if (String.IsNullOrWhiteSpace(response.CharacterSet))
-                {
-                    readStream = new StreamReader(receiveStream);
-                }
-                else
-                {
-                    readStream = new StreamReader(receiveStream,
-                        Encoding.GetEncoding(response.CharacterSet));
-                }
-                string data = readStream.ReadToEnd();
-                string strStart = "{\"gregorian\":{\"date\":\"";
-                string strEnd = "\",\"format\":";
-                if (data.Contains(strStart))
-                {
-                    int indexStart = data.IndexOf(strStart, 0) + strStart.Length;
-                    output = data.Substring(indexStart, 10).Split('-');
-                }
-                response.Close();
-                readStream.Close();
+                var jsonRespoce = webClient.DownloadString(urlAddress);
+                var aladhanH2G = JsonConvert.DeserializeObject<AladhanAPI>(jsonRespoce);
+                _dateTime = new DateTime(int.Parse(aladhanH2G.data.gregorian.year),
+                    aladhanH2G.data.gregorian.month.number,
+                    int.Parse(aladhanH2G.data.gregorian.day));
+                output = (dateTime.Date - ((DateTime)_dateTime).Date).Days;
+            }
+            catch
+            {
+                output = null;
+            }
+            finally
+            {
+                webClient.Dispose();
             }
 
-            if (output.Any(x => x == null))
-            {
-                return null;
-            }
-
-            var _dateTime = new DateTime(int.Parse(output[2]), int.Parse(output[1]), int.Parse(output[0]));
-            return (dateTime.Date - _dateTime.Date).Days;
+            return output;
         }
 
         internal static bool IsValidRegion()
