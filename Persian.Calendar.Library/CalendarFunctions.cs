@@ -278,35 +278,38 @@ namespace Persian.Calendar.Library
 
             if (mode == 2 || mode == 0)
             {
-                switch (day_p2)
+                if (mode == 2 || day_p1 != 3)
                 {
-                    case 1:
-                        message += "یکم";
-                        break;
-                    case 2:
-                        message += "دوم";
-                        break;
-                    case 3:
-                        message += "سوم";
-                        break;
-                    case 4:
-                        message += "چهارم";
-                        break;
-                    case 5:
-                        message += "پنجم";
-                        break;
-                    case 6:
-                        message += "ششم";
-                        break;
-                    case 7:
-                        message += "هفتم";
-                        break;
-                    case 8:
-                        message += "هشتم";
-                        break;
-                    case 9:
-                        message += "نهم";
-                        break;
+                    switch (day_p2)
+                    {
+                        case 1:
+                            message += "یکم";
+                            break;
+                        case 2:
+                            message += "دوم";
+                            break;
+                        case 3:
+                            message += "سوم";
+                            break;
+                        case 4:
+                            message += "چهارم";
+                            break;
+                        case 5:
+                            message += "پنجم";
+                            break;
+                        case 6:
+                            message += "ششم";
+                            break;
+                        case 7:
+                            message += "هفتم";
+                            break;
+                        case 8:
+                            message += "هشتم";
+                            break;
+                        case 9:
+                            message += "نهم";
+                            break;
+                    }
                 }
             }
             else
