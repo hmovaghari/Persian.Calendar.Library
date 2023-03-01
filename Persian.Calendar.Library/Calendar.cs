@@ -120,5 +120,13 @@ namespace Persian.Calendar.Library
             get => "";
         }
 
+        public static string GetCultureInfo(CalendarType calendarType)
+        {
+            return calendarType == CalendarType.PersianCalendar ? "fa-ir"
+                : calendarType == CalendarType.HijriCalendar ? "ar-SA"
+                : calendarType == CalendarType.GregorianCalendar ? "en-US"
+                : null;
+        }
+
     }
 }
