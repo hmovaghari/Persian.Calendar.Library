@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Globalization;
 using System.Net;
 using Newtonsoft.Json;
+using System.Net.Http;
+using System.Text.RegularExpressions;
 
 namespace Persian.Calendar.Library
 {
@@ -20,7 +22,7 @@ namespace Persian.Calendar.Library
             hijriCalendar.HijriAdjustment = hijriAdjustment;
         }
 
-        internal static int? GetHijriAdjustmentOnline(DateTime dateTime)
+        internal static int? GetHijriAdjustmentOnlineFromAladhan(DateTime dateTime)
         {
             var webClient = new WebClient();
             var _hijriCalendar = new HijriCalendar();
@@ -51,6 +53,35 @@ namespace Persian.Calendar.Library
             }
 
             return output;
+        }
+
+        internal static async Task<int?> GetHijriAdjustmentOnlineFromTimeIR(DateTime dateTime)
+        {
+            try
+            {
+                string url = "https://time.ir";
+                using (HttpClient client = new HttpClient())
+                {
+                    HttpResponseMessage response = await client.GetAsync(url);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var htmlContent = await response.Content.ReadAsStringAsync();
+                        //<span id="ctl00_cphTop_Sampa_Web_View_TimeUI_ShowDate00cphTop_3734_lblHijriNumeral" class="show numeral">۱۴۴۶/۰۹/۱۳</span>
+                        var pattern = @"<span id=""ctl00_cphTop_Sampa_Web_View_TimeUI_ShowDate\d+cphTop_\d+_lblHijriNumeral"" class=""show numeral"">([\d/]+)</span>";
+                        var match = Regex.Match(htmlContent, pattern);
+                        if (match.Success)
+                        {
+                            var hijriStringDate = ToEnglishNumber(match.Groups[1].Value);
+                            CultureInfo arSA = new CultureInfo("ar-SA");
+                            arSA.DateTimeFormat.Calendar = new HijriCalendar();
+                            var gregorianDate = DateTime.ParseExact(hijriStringDate, "yyyy/MM/dd", arSA);
+                            return (gregorianDate.Date - dateTime.Date ).Days;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex) { }
+            return null;
         }
 
         internal static bool IsValidRegion()
@@ -240,6 +271,32 @@ namespace Persian.Calendar.Library
                     .Replace("7", "۷")
                     .Replace("8", "۸")
                     .Replace("9", "۹");
+        }
+
+        internal static string ToEnglishNumber(string number)
+        {
+            return number
+                .Replace("۰", "0")
+                .Replace("٠", "0")
+                .Replace("٠", "0")
+                .Replace("۱", "1")
+                .Replace("١", "1")
+                .Replace("۲", "2")
+                .Replace("٢", "2")
+                .Replace("۳", "3")
+                .Replace("٣", "3")
+                .Replace("۴", "4")
+                .Replace("٤", "4")
+                .Replace("۵", "5")
+                .Replace("٥", "5")
+                .Replace("۶", "6")
+                .Replace("٦", "6")
+                .Replace("۷", "7")
+                .Replace("٧", "7")
+                .Replace("۸", "8")
+                .Replace("٨", "8")
+                .Replace("۹", "9")
+                .Replace("٩", "9");
         }
 
         internal static string ToPersianOrdinalNumber(int number)

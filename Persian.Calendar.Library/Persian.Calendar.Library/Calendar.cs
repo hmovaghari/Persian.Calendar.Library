@@ -26,9 +26,9 @@ namespace Persian.Calendar.Library
             get => CalendarFunctions.IsValidRegion();
         }
 
-        public static int? GetHijriAdjustmentOnline(DateTime dateTime)
+        public static async Task<int?> GetHijriAdjustmentOnline(DateTime dateTime)
         {
-            return CalendarFunctions.GetHijriAdjustmentOnline(dateTime);
+            return await CalendarFunctions.GetHijriAdjustmentOnlineFromTimeIR(dateTime);
         }
 
         public int HijriAdjustment { get; set; }
