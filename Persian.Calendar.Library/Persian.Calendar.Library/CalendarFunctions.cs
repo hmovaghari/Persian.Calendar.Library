@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 
 namespace Persian.Calendar.Library
 {
-    internal static class CalendarFunctions
+    public static class CalendarFunctions
     {
         internal static PersianCalendar persianCalendar = new PersianCalendar();
 
