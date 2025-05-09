@@ -17,6 +17,16 @@ namespace Persian.Calendar.Library
 
         internal static HijriCalendar hijriCalendar = new HijriCalendar();
 
+        public static DateTime PersianCalendarToDateTime(int year, int month, int day)
+        {
+            return persianCalendar.ToDateTime(year, month, day, 0, 0, 0, 0);
+        }
+
+        public static DateTime HijriCalendarToDateTime(int year, int month, int day)
+        {
+            return hijriCalendar.ToDateTime(year, month, day, 0, 0, 0, 0);
+        }
+
         internal static void SetHijriAdjustment(int hijriAdjustment)
         {
             hijriCalendar.HijriAdjustment = hijriAdjustment;
