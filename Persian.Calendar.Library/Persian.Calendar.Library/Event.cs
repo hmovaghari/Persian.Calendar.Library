@@ -6,21 +6,9 @@ using System.Threading.Tasks;
 
 namespace Persian.Calendar.Library
 {
-    public class Event
+    public class Event : EventJson
     {
-        public static DateTime UpdateDateTime => new DateTime(year: 2025, month: 06, day: 23, hour: 13, minute: 10, second: 0);
-
         public CalendarType CalendarType { get; set; }
-
-        public int? Year { get; set; }
-
-        public byte? Month { get; set; }
-
-        public byte? Day { get; set; }
-
-        public string Description { get; set; }
-
-        public bool IsHoliday { get; set; }
 
         public static List<Event> GetEvents()
         {

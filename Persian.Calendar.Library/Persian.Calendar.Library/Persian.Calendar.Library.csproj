@@ -60,6 +60,7 @@
     <Compile Include="CalendarFunctions.cs" />
     <Compile Include="CalendarType.cs" />
     <Compile Include="Event.cs" />
+    <Compile Include="EventJson.cs" />
     <Compile Include="EXMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UICalendar.cs">
